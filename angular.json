@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Learning-Angular": {
+    "task-manager": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/learning-angular",
+            "outputPath": "dist/task-manager",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Learning-Angular:build:production"
+              "buildTarget": "task-manager:build:production"
             },
             "development": {
-              "buildTarget": "Learning-Angular:build:development"
+              "buildTarget": "task-manager:build:development"
             }
           },
           "defaultConfiguration": "development"
