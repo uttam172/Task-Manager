@@ -80,19 +80,198 @@ src/
 Now, let's create a Task List Component inside src/app/.
 
 Run:
+    ng g component task-list --standalone
+        or
+    ng generate component task-list --standalone
 
-sh
-Copy
-Edit
-ng g component task-list --standalone
-or
-
-sh
-Copy
-Edit
-ng generate component task-list --standalone
 This will create:
+    task-list.component.ts (Logic)
+    task-list.component.html (Template)
+    task-list.component.css (Styles)
+    task-list.component.spec.ts (Testing)
 
-task-list.component.ts (Logic)
-task-list.component.html (Template)
-task-list.component.css (Styles)
+src/
+ ├── app/
+ │   ├── task-list/
+ │   │   ├── task-list.component.css (Styles)
+ │   │   ├── task-list.component.html (Template)
+ │   │   ├── task-list.component.spec.ts (Testing)
+ │   │   ├── task-list.component.ts (Logic)
+ │   ├── app.config.ts
+ │   ├── app.component.ts
+ │   ├── app.component.html
+ │   ├── app.component.css
+ │   ├── app.component.spec.ts
+ │   ├── app.routes.ts
+ ├── index.html
+ ├── main.ts
+ ├── styles.css
+
+------------
+📍 Step 4: Add the Component to Your App
+Open app.component.html and replace the content with:
+
+html:
+    <h1>My Angular 19 App</h1>
+    <app-task-list></app-task-list>
+
+Then, open app.component.ts and import the new component:
+
+typescript:
+    import { Component } from '@angular/core';
+    import { TaskListComponent } from './task-list/task-list.component';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      templateUrl: './app.component.html',
+      styleUrl: './app.component.css',
+      imports: [TaskListComponent]
+    })
+    export class AppComponent {}
+
+Run: 
+    ng serve
+🔹 You should see your TaskListComponent working inside your main app!
+
+--------------
+Now let's dive into Data Binding—the backbone of dynamic Angular applications.
+--------------
+
+📌 Step 5: Understanding Data Binding in Angular 19
+Angular provides four types of data binding to connect your UI and logic:
+
+1️⃣ Interpolation ({{ }}) → Displaying Data
+This is used to bind data from TypeScript to HTML.
+
+🔹 Example (Modify task-list.component.ts):
+
+typescript:
+    import { Component } from '@angular/core';
+
+    @Component({
+      selector: 'app-task-list',
+      standalone: true, (By default true in case you don't mention)
+      templateUrl: './task-list.component.html',
+      styleUrl: './task-list.component.css'
+    })
+    export class TaskListComponent {
+      task = 'Learn Angular 19'; // Dynamic data
+    }
+
+🔹 Modify task-list.component.html:
+
+html:
+    <h2>Task List</h2>
+    <p>Current Task: {{ task }}</p>
+
+✅ Run ng serve → You should see "Current Task: Learn Angular 19" displayed on the page.
+
+---------
+2️⃣ Property Binding ([property]="value") → Binding to HTML Attributes
+This is used when you need to dynamically update properties like disabled, src, value, etc.
+
+🔹 Modify task-list.component.ts:
+
+typescript:
+    taskInputPlaceholder = "Enter a new task...";
+    isDisabled = true;
+
+🔹 Modify task-list.component.html:
+
+html:
+    <input type="text" [placeholder]="taskInputPlaceholder" [disabled]="isDisabled">
+
+✅ The input box should be disabled, and the placeholder should be dynamically set.
+
+---------
+3️⃣ Event Binding ((event)="function()") → Handling User Events
+Used to handle clicks, key presses, form submissions, etc.
+
+🔹 Modify task-list.component.ts:
+
+typescript:
+    toggleInput() {
+        this.isDisabled = !this.isDisabled;
+    }
+
+🔹 Modify task-list.component.html:
+
+html:
+    <button (click)="toggleInput()">Toggle Input</button>
+
+✅ Clicking the button should enable/disable the input field dynamically.
+
+-----------
+4️⃣ Two-Way Binding ([(ngModel)]="value") → Sync Data Between UI & Component
+To enable two-way binding, import FormsModule inside task-list.component.ts.
+
+🔹 Modify task-list.component.ts:
+
+typescript:
+    import { Component } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+
+    @Component({    
+        selector: 'app-task-list',
+        standalone: true,
+        templateUrl: './task-list.component.html',
+        styleUrl: './task-list.component.css',
+        imports: [FormsModule] // Import FormsModule for ngModel
+    })
+    export class TaskListComponent {
+      newTask = "";
+    }
+
+🔹 Modify task-list.component.html:
+
+html:
+    <input type="text" [(ngModel)]="newTask" placeholder="Enter task">
+    <p>You typed: {{ newTask }}</p>
+
+✅ Now, as you type in the input box, the text will dynamically update below it!
+
+----------
+Great job! 🎉 Now let’s build a simple Task List app where you can:
+✅ Add new tasks
+✅ Delete tasks
+✅ Mark tasks as completed
+----------
+
+📌 Step 6: Build a Task List App
+
+🔹 Step 1: Update task-list.component.ts
+Modify your component to manage an array of tasks:
+
+typescript:
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-task-list',
+  templateUrl: './task-list.component.html',
+  styleUrl: './task-list.component.css',
+  imports: [FormsModule] // Import FormsModule for ngModel
+})
+export class TaskListComponent {
+  newTask: string = "";
+  tasks: { text: string; completed: boolean }[] = [];
+
+  // Add task
+  addTask() {
+    if (this.newTask.trim() !== "") {
+      this.tasks.push({ text: this.newTask, completed: false });
+      this.newTask = ""; // Clear input after adding
+    }
+  }
+
+  // Remove task
+  removeTask(index: number) {
+    this.tasks.splice(index, 1);
+  }
+
+  // Toggle task completion
+  toggleTask(index: number) {
+    this.tasks[index].completed = !this.tasks[index].completed;
+  }
+}

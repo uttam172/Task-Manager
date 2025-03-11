@@ -1,0 +1,17 @@
+<div class="text-center space-y-2">
+  <p class="text-xl mb-5">Task List</p>
+  <p class="text-sm">Current Task: {{ task }}</p>
+
+  <input
+    type="text"
+    [(ngModel)]="newTask"
+    [placeholder]="taskInputPlaceholder"
+    [disabled]="isDisabled"
+    class="border-b focus:outline-none focus:ring-0 focus:border-b-2"
+  />
+  <button (click)="toggleInput()" class="my-3 mx-5 border px-5 py-[1px]">
+    Toggle Input
+  </button>
+
+  <p>You typed: {{ newTask }}</p>
+</div>
