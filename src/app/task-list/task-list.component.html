@@ -1,17 +1,35 @@
 <div class="text-center space-y-2">
   <p class="text-xl mb-5">Task List</p>
-  <p class="text-sm">Current Task: {{ task }}</p>
 
   <input
     type="text"
     [(ngModel)]="newTask"
-    [placeholder]="taskInputPlaceholder"
-    [disabled]="isDisabled"
+    placeholder="Enter a task"
     class="border-b focus:outline-none focus:ring-0 focus:border-b-2"
   />
-  <button (click)="toggleInput()" class="my-3 mx-5 border px-5 py-[1px]">
-    Toggle Input
+  <button
+    (click)="addTask()"
+    class="my-3 mx-5 border px-5 py-[1px] rounded-full hover:shadow hover:shadow-amber-50"
+  >
+    Add Task
   </button>
 
-  <p>You typed: {{ newTask }}</p>
+  <ul class="list-none mt-5">
+    <li
+      *ngFor="let task of tasks; let i = index"
+      class="w-full flex justify-between items-center gap-5 border-b mb-3 pb-2"
+    >
+      <span [style.textDecoration]="task.completed ? 'line-through' : 'none'">
+        {{ task.text }}
+      </span>
+      <div class="flex gap-5">
+        <button (click)="toggleTask(i)" class="cursor-pointer hover:scale-105">
+          ✔
+        </button>
+        <button (click)="removeTask(i)" class="cursor-pointer hover:scale-105">
+          ❌
+        </button>
+      </div>
+    </li>
+  </ul>
 </div>
