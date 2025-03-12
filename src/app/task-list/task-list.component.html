@@ -1,22 +1,35 @@
 <div class="text-center space-y-2">
-  <p class="text-xl mb-5">Task List</p>
+  <p class="text-xl mb-5 text-white">Task List</p>
+
+  <!-- Progressbar -->
+  <div class="w-full flex justify-center items-center gap-5 overflow-visible">
+    <div class="w-4/7 h-[9px] bg-gray-500 rounded-full overflow-visible">
+      <div
+        class="bg-amber-100 h-2 rounded-full transition-all duration-500 drop-shadow-[0_0_10px_rgba(254,243,199,0.8)]"
+        [style.width]="getCompletionPercentage() + '%'"
+      ></div>
+    </div>
+    <p class="text-sm text-gray-300">
+      {{ getCompletionPercentage() }}% Completed
+    </p>
+  </div>
 
   <!-- Input and Add button -->
   <input
     type="text"
     [(ngModel)]="newTask"
     placeholder="Enter a task"
-    class="border-b focus:outline-none focus:ring-0 focus:border-b-2"
+    class="border-b focus:outline-none focus:ring-0 focus:border-b-2 text-white"
   />
   <button
     (click)="addTask()"
-    class="my-3 mx-5 border px-5 py-[1px] rounded-full hover:shadow hover:shadow-amber-50"
+    class="my-3 mx-5 border px-5 py-[1px] text-white rounded-full hover:shadow-sm hover:shadow-amber-100"
   >
     Add Task
   </button>
 
   <!-- Filter Buttons -->
-  <div class="flex justify-center items-center gap-10">
+  <div class="flex justify-center items-center gap-10 text-white">
     <button
       (click)="setFilter('all')"
       class="w-22 rounded-full text-sm mt-5 hover:shadow shadow-amber-50"
@@ -38,11 +51,11 @@
   </div>
 
   <!-- Display filtered Tasks -->
-  <div class="w-screen h-80 px-72 overflow-y-scroll scrollbar-none">
+  <div class="w-screen h-80 px-72 overflow-y-scroll scrollbar-none" [@fadeInOut]>
     <ul class="list-none mt-5">
       <li
-        *ngFor="let task of getFilteredTasks(); let i = index"
-        class="w-full flex justify-between items-center gap-5 mb-3 pb-2 px-5"
+        *ngFor="let task of getFilteredTasks(); let i = index"  
+        class="w-full flex justify-between items-center gap-5 mb-3 pb-2"
       >
         <span [style.textDecoration]="task.completed ? 'line-through' : 'none'">
           {{ task.text }}
