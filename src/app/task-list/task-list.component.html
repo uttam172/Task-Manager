@@ -1,6 +1,7 @@
 <div class="text-center space-y-2">
   <p class="text-xl mb-5">Task List</p>
 
+  <!-- Input and Add button -->
   <input
     type="text"
     [(ngModel)]="newTask"
@@ -14,22 +15,53 @@
     Add Task
   </button>
 
-  <ul class="list-none mt-5">
-    <li
-      *ngFor="let task of tasks; let i = index"
-      class="w-full flex justify-between items-center gap-5 border-b mb-3 pb-2"
+  <!-- Filter Buttons -->
+  <div class="flex justify-center items-center gap-10">
+    <button
+      (click)="setFilter('all')"
+      class="w-22 rounded-full text-sm mt-5 hover:shadow shadow-amber-50"
     >
-      <span [style.textDecoration]="task.completed ? 'line-through' : 'none'">
-        {{ task.text }}
-      </span>
-      <div class="flex gap-5">
-        <button (click)="toggleTask(i)" class="cursor-pointer hover:scale-105">
-          ✔
-        </button>
-        <button (click)="removeTask(i)" class="cursor-pointer hover:scale-105">
-          ❌
-        </button>
-      </div>
-    </li>
-  </ul>
+      All
+    </button>
+    <button
+      (click)="setFilter('completed')"
+      class="w-22 rounded-full text-sm mt-5 hover:shadow shadow-amber-50"
+    >
+      Completed
+    </button>
+    <button
+      (click)="setFilter('pending')"
+      class="w-22 rounded-full text-sm mt-5 hover:shadow shadow-amber-50"
+    >
+      Pending
+    </button>
+  </div>
+
+  <!-- Display filtered Tasks -->
+  <div class="w-screen h-80 px-72 overflow-y-scroll scrollbar-none">
+    <ul class="list-none mt-5">
+      <li
+        *ngFor="let task of getFilteredTasks(); let i = index"
+        class="w-full flex justify-between items-center gap-5 mb-3 pb-2 px-5"
+      >
+        <span [style.textDecoration]="task.completed ? 'line-through' : 'none'">
+          {{ task.text }}
+        </span>
+        <div class="flex gap-5">
+          <button
+            (click)="toggleTask(i)"
+            class="cursor-pointer hover:scale-105"
+          >
+            ✔
+          </button>
+          <button
+            (click)="removeTask(i)"
+            class="cursor-pointer hover:scale-105"
+          >
+            ❌
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>

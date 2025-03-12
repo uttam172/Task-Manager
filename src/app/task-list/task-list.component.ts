@@ -5,15 +5,17 @@ import { FormsModule } from '@angular/forms'
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
   templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+  styleUrl: './task-list.component.css',
+  imports: [CommonModule, FormsModule]
 })
 
 export class TaskListComponent {
   newTask: string = ""
-  tasks: { text: string; completed: boolean } [] = []
-  
+  tasks: { text: string; completed: boolean }[] = []
+  filter: string = 'all'
+
   constructor() {
     this.loadTasks()
   }
@@ -50,5 +52,22 @@ export class TaskListComponent {
   toggleTask(index: number) {
     this.tasks[index].completed = !this.tasks[index].completed
     this.saveTasks()
+  }
+
+  // Filter task list based on selected filter
+  getFilteredTasks() {
+    switch (this.filter) {
+      case 'completed':
+        return this.tasks.filter(task => task.completed);
+      case 'pending':
+        return this.tasks.filter(task => !task.completed);
+      default:
+        return this.tasks;
+    }
+  }
+
+  // Set filter
+  setFilter(type: string) {
+    this.filter = type
   }
 }
